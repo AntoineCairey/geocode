@@ -52,12 +52,9 @@ class ChargingPointManager extends AbstractManager {
   }
 
   async countAll() {
-    // Execute the SQL SELECT query to retrieve all users from the "user" table
-    const [rows] = await this.database
-      .query(`SELECT COUNT(*) AS charging_point_count FROM
-    ${this.table}`);
-
-    // Return the array of users
+    const [rows] = await this.database.query(
+      `SELECT COUNT(*) AS charging_point_count FROM charging_point`
+    );
     return rows[0];
   }
 }

@@ -3,14 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { MDBDatatable, MDBBtn } from "mdb-react-ui-kit";
-// import NavBarBackOffice from "../components/NavBarBackOffice";
 import { useTheContext } from "../context/Context";
 import NavBarBO from "../components/NavBarBO";
 
 export default function BackOfficeCars() {
   const [userData, setUserData] = useState([]);
   const [plugTypes, setPlugTypes] = useState([]);
-  // État pour gérer l'affichage de la boîte de dialogue de confirmation
 
   const { apiService, setModal, yesNoModal, setYesNoModal } = useTheContext();
   const navigate = useNavigate();

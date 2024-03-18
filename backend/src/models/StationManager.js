@@ -8,7 +8,6 @@ class StationManager extends AbstractManager {
   }
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific user by its ID
     const [rows] = await this.database.query(
       `select * from ${this.table} where id = ?`,
       [id]
@@ -18,7 +17,6 @@ class StationManager extends AbstractManager {
       latitude: parseFloat(rows[0].latitude),
       longitude: parseFloat(rows[0].longitude),
     };
-    // Return the first row of the result, which represents the user
     return result;
   }
 

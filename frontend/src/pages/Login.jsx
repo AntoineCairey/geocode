@@ -14,7 +14,7 @@ export default function Login() {
 
   const login = async (credentials) => {
     try {
-      const data = await apiService.post(`/users/login`, credentials);
+      const data = await apiService.post(`/login`, credentials);
       localStorage.setItem("token", data.token);
       apiService.setToken(data.token);
       getUserInfos();

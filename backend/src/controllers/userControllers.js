@@ -1,4 +1,3 @@
-// Import access to database tables
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const tables = require("../tables");

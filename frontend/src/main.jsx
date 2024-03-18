@@ -71,6 +71,12 @@ const router = createBrowserRouter([
       {
         path: "/cars",
         element: <Cars />,
+        loader: () => {
+          return {
+            cars: functionsService.getMyCars(),
+            plugTypes: functionsService.fetchPlugTypes(),
+          };
+        },
       },
       {
         path: "/newcar",
@@ -89,7 +95,7 @@ const router = createBrowserRouter([
       {
         path: "/modifprofil/",
         element: <ModifProfil />,
-        loader: async () => functionsService.getUserInfos(),
+        loader: async () => functionsService.getMyInfos(),
       },
       {
         path: "/backoffice",

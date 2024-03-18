@@ -8,59 +8,44 @@ class VehicleManager extends AbstractManager {
   }
 
   async create(vehicle) {
-    // Execute the SQL INSERT query to add a new user to the "user" table
     const result = await this.database.query(
-      `INSERT INTO ${this.table} (brand, model, user_id, plug_type_id) VALUES (?, ?, ?, ?)`,
+      `INSERT INTO vehicle (brand, model, user_id, plug_type_id) VALUES (?, ?, ?, ?)`,
       [vehicle.brand, vehicle.model, vehicle.user_id, vehicle.plug_type_id]
     );
-
-    // Return the ID of the newly inserted user
     return result.insertId;
   }
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific user by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
+      `select * from vehicle where id = ?`,
       [id]
     );
-
-    // Return the first row of the result, which represents the user
     return rows[0];
   }
 
   async readCarByUser(userId) {
-    // Execute the SQL SELECT query to retrieve a specific user by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where user_id = ?`,
+      `select * from vehicle where user_id = ?`,
       [userId]
     );
-
-    // Return the first row of the result, which represents the user
     return rows;
   }
 
   async readAll() {
-    // Execute the SQL SELECT query to retrieve all users from the "user" table
-    const [rows] = await this.database.query(`select * from ${this.table}`);
-
-    // Return the array of users
+    const [rows] = await this.database.query(`select * from vehicle`);
     return rows;
   }
 
   async countAll() {
-    // Execute the SQL SELECT query to retrieve all users from the "user" table
     const [rows] = await this.database
       .query(`SELECT COUNT(*) AS vehicle_count FROM
-    ${this.table}`);
-
-    // Return the array of users
+    vehicle`);
     return rows[0];
   }
 
   async delete(id) {
     const result = await this.database.query(
-      `delete from ${this.table} where id = ?`,
+      `delete from vehicle where id = ?`,
       [id]
     );
     return result;
@@ -68,7 +53,7 @@ class VehicleManager extends AbstractManager {
 
   async update(vehicle, id) {
     const [rows] = await this.database.query(
-      `update ${this.table} set brand = ?, model = ?, user_id = ?, plug_type_id = ? where id = ?`,
+      `update vehicle set brand = ?, model = ?, user_id = ?, plug_type_id = ? where id = ?`,
       [vehicle.brand, vehicle.model, vehicle.user_id, vehicle.plug_type_id, id]
     );
     return rows;

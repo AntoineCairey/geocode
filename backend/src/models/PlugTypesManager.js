@@ -8,21 +8,15 @@ class PlugTypesManager extends AbstractManager {
   }
 
   async readAll() {
-    // Execute the SQL SELECT query to retrieve all users from the "user" table
-    const [rows] = await this.database.query(`select * from ${this.table}`);
-
-    // Return the array of users
+    const [rows] = await this.database.query(`select * from plug_type`);
     return rows;
   }
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific user by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
+      `select * from plug_type where id = ?`,
       [id]
     );
-
-    // Return the first row of the result, which represents the user
     return rows[0];
   }
 }

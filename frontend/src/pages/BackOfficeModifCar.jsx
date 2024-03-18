@@ -11,9 +11,9 @@ export default function BackOfficeModifCar() {
   const loaderData = useLoaderData();
 
   const [vFormData, setvFormData] = useState({
-    brand: loaderData?.preloadedCarData?.brand ?? "",
-    model: loaderData?.preloadedCarData?.model ?? "",
-    plug_type_id: loaderData?.preloadedCarData?.plug_type_id ?? "",
+    brand: loaderData?.brand ?? "",
+    model: loaderData?.model ?? "",
+    plug_type_id: loaderData?.plug_type_id ?? "",
   });
 
   const editCar = async (newData) => {

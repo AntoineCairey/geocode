@@ -5,7 +5,6 @@ import {
   MDBCardTitle,
   MDBCardText,
 } from "mdb-react-ui-kit";
-import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheContext } from "../context/Context";
@@ -22,10 +21,8 @@ export default function Cars() {
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    const jwtToken = localStorage.getItem("token");
-    const token = jwtDecode(jwtToken);
     try {
-      const response = await apiService.get(`/vehicle/users/${token.id}`);
+      const response = await apiService.get(`/vehicle/me`);
       setVehicles(response);
     } catch (error) {
       console.error("Error fetching vehicles:", error);

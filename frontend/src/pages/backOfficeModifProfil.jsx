@@ -9,12 +9,12 @@ export default function BackOfficeModifProfil() {
   const navigate = useNavigate();
 
   const [modifProfil, setModifProfil] = useState({
-    email: loaderData?.preloadedUserData?.email ?? "",
-    first_name: loaderData?.preloadedUserData?.first_name ?? "",
-    last_name: loaderData?.preloadedUserData?.last_name ?? "",
-    birth_date: loaderData?.preloadedUserData?.birth_date ?? "",
-    postal_code: loaderData?.preloadedUserData?.postal_code ?? "",
-    city: loaderData?.preloadedUserData?.city ?? "",
+    email: loaderData?.email ?? "",
+    first_name: loaderData?.first_name ?? "",
+    last_name: loaderData?.last_name ?? "",
+    birth_date: loaderData?.birth_date ?? "",
+    postal_code: loaderData?.postal_code ?? "",
+    city: loaderData?.city ?? "",
   });
 
   const { userId } = useParams();

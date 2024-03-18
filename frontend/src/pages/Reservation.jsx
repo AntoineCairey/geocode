@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { DateTime } from "luxon";
 import {
   MDBBtn,
@@ -17,10 +16,8 @@ export default function Reservation() {
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    const jwtToken = localStorage.getItem("token");
-    const token = jwtDecode(jwtToken);
     try {
-      const data = await apiService.get(`/reservation/users/${token.id}`);
+      const data = await apiService.get(`/reservation/me`);
       setReservations(
         data
           .map((r) => ({

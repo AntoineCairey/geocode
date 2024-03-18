@@ -33,6 +33,7 @@
       {
         "assert": "either"
       }
-    ]
+    ],
+    "no-return-await": "off"
   }
 }

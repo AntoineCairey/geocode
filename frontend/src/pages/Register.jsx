@@ -9,7 +9,7 @@ export default function Register() {
 
   const register = async (newUser) => {
     try {
-      const data = await apiService.post(`/users/register`, newUser);
+      const data = await apiService.post(`/register`, newUser);
       localStorage.setItem("token", data.token);
       navigate("/register/infos");
     } catch (err) {
