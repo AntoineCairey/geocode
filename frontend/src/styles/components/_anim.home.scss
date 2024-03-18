@@ -1,0 +1,29 @@
+.anim-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  margin: 20px auto;
+  max-width: 1000px;
+
+  video {
+    height: 100px;
+    width: 100%;
+    aspect-ratio: initial;
+    object-fit: cover;
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    text {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 28px !important;
+    }
+  }
+}
