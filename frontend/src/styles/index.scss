@@ -30,11 +30,12 @@ $my-dark-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary);
   box-sizing: border-box;
 }
 
-body {
+/* body {
   min-height: 100vh;
-}
+} */
+
 .global-container-outlet {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   z-index: 1;
 }
 .confirmation-dialog {
@@ -55,8 +56,10 @@ body {
   }
 }
 
-.global-container-outlet:not(:has(.map-container)) {
-  margin-bottom: 90px;
+@media only screen and (max-width: 768px) {
+  .global-container-outlet:not(:has(.map-container)) {
+    margin-bottom: 90px;
+  }
 }
 
 @media only screen and (min-width: 768px) {

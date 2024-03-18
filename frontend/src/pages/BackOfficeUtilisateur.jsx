@@ -64,7 +64,7 @@ export default function BackOfficeUtilisateur() {
       <NavBarBO />
       <h2 className="bo-title">Utilisateurs</h2>
       <div className="backoffidata">
-        <MDBDatatable fixedHeader maxHeight="460px" data={basicData} />
+        <MDBDatatable data={basicData} />
       </div>
       {/* Boîte de dialogue de confirmation */}
       {yesNoModal && (
