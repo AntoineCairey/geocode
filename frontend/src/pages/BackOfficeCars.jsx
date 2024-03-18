@@ -63,7 +63,7 @@ export default function BackOfficeCars() {
       <h2 className="bo-title">Véhicules</h2>
 
       <div className="backoffidata">
-        <MDBDatatable fixedHeader maxHeight="460px" data={basicData} />
+        <MDBDatatable data={basicData} />
       </div>
 
       {/* Boîte de dialogue de confirmation */}
