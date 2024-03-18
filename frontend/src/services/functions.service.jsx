@@ -1,11 +1,58 @@
+import { DateTime } from "luxon";
 import apiService from "./api.service";
 
-const fetchChargingPoint = async (chargingPointId) => {
+const getUsers = async () => {
+  return await apiService.get(`/users`);
+};
+
+const getUser = async (userId) => {
+  return await apiService.get(`/users/${userId}`);
+};
+
+const getMyUser = async () => {
+  return await apiService.get(`/users/me`);
+};
+
+const getCars = async () => {
+  return await apiService.get(`/vehicle`);
+};
+
+const getCar = async (carId) => {
+  return await apiService.get(`/vehicle/${carId}`);
+};
+
+const getMyCars = async () => {
+  return await apiService.get(`/vehicle/me`);
+};
+
+const getPlugTypes = async () => {
+  return await apiService.get(`/plugtypes`);
+};
+
+const getMyReservations = async () => {
+  const data = await apiService.get(`/reservation/me`);
+  const filtered = data
+    .map((r) => ({
+      ...r,
+      datetime: DateTime.fromSQL(r.datetime),
+    }))
+    .filter((r) => r.is_cancelled === 0);
+  return filtered;
+};
+
+const getStations = async () => {
+  return await apiService.get(`/station`);
+};
+
+const getChargingPoint = async (chargingPointId) => {
   return await apiService.get(`/chargingpoint/${chargingPointId}`);
 };
 
-const fetchStations = async () => {
-  return await apiService.get(`/station`);
+const getCounts = async () => {
+  const userCount = await apiService.get(`/users/count`);
+  const vehicleCount = await apiService.get(`/vehicle/count`);
+  const cpCount = await apiService.get(`/chargingpoint/count`);
+  return { ...userCount, ...vehicleCount, ...cpCount };
 };
 
 const returnAdmin = async () => {
@@ -18,46 +65,17 @@ const returnAdmin = async () => {
   }
 };
 
-const getUserInfos = async (userId) => {
-  return await apiService.get(`/users/${userId}`);
-};
-
-const getMyInfos = async () => {
-  return await apiService.get(`/users/me`);
-};
-
-const getCarInfos = async (carId) => {
-  return await apiService.get(`/vehicle/${carId}`);
-};
-
-const getMyCars = async () => {
-  return await apiService.get(`/vehicle/me`);
-};
-
-const getCounts = async () => {
-  const userCount = await apiService.get(`/users/count`);
-  const vehicleCount = await apiService.get(`/vehicle/count`);
-  const cpCount = await apiService.get(`/chargingpoint/count`);
-  return { ...userCount, ...vehicleCount, ...cpCount };
-};
-
-const fetchCars = async () => {
-  return await apiService.get(`/vehicle`);
-};
-
-const fetchPlugTypes = async () => {
-  return await apiService.get(`/plugtypes`);
-};
-
 export default {
-  fetchChargingPoint,
-  fetchStations,
-  returnAdmin,
-  getUserInfos,
-  getMyInfos,
-  getCarInfos,
+  getUsers,
+  getUser,
+  getMyUser,
+  getCars,
+  getCar,
   getMyCars,
+  getPlugTypes,
+  getMyReservations,
+  getStations,
+  getChargingPoint,
   getCounts,
-  fetchCars,
-  fetchPlugTypes,
+  returnAdmin,
 };

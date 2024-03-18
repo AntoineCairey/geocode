@@ -1,23 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheContext } from "../context/Context";
 
 export default function ModifProfil() {
   const navigate = useNavigate();
   const { user, editUser } = useTheContext();
-  const [modifProfil, setModifProfil] = useState(user);
+  const [modifProfil, setModifProfil] = useState({
+    ...user,
+    birth_date: user?.birth_date,
+  });
 
   const onSubmit = (e) => {
     e.preventDefault();
   };
-
-  useEffect(() => {
-    setModifProfil({
-      ...modifProfil,
-      birth_date: modifProfil?.birth_date,
-    });
-  }, []);
 
   const handleChange = (e) => {
     setModifProfil({ ...modifProfil, [e.target.name]: e.target.value });

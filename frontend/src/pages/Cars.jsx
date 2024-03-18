@@ -5,38 +5,17 @@ import {
   MDBCardTitle,
   MDBCardText,
 } from "mdb-react-ui-kit";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { useTheContext } from "../context/Context";
 
 export default function Cars() {
-  const [plugTypes, setPlugTypes] = useState([]);
-  // État pour gérer l'affichage de la boîte de dialogue de confirmation
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  // État pour stocker l'ID du véhicule à supprimer
-  const [vehicleToDelete, setVehicleToDelete] = useState(null);
-  const [vehicles, setVehicles] = useState([]);
-
+  const { cars, plugTypes } = useLoaderData();
   const { apiService } = useTheContext();
   const navigate = useNavigate();
 
-  const fetchData = async () => {
-    try {
-      const response = await apiService.get(`/vehicle/me`);
-      setVehicles(response);
-    } catch (error) {
-      console.error("Error fetching vehicles:", error);
-    }
-  };
-
-  const fetchPlugTypes = async () => {
-    try {
-      const response = await apiService.get(`/plugtypes`);
-      setPlugTypes(response);
-    } catch (error) {
-      console.error("Error fetching plug types:", error);
-    }
-  };
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [vehicleToDelete, setVehicleToDelete] = useState(null);
 
   // Fonction pour ouvrir la boîte de dialogue de confirmation
   const openConfirmationDialog = (carId) => {
@@ -49,17 +28,12 @@ export default function Cars() {
     try {
       await apiService.del(`/vehicle/${vehicleToDelete}`);
       setVehicleToDelete(null);
-      fetchData();
+      navigate(0);
     } catch (error) {
       console.error("Error deleting car:", error);
     }
     setShowConfirmation(false);
   };
-
-  useEffect(() => {
-    fetchPlugTypes();
-    fetchData();
-  }, []);
 
   function getPlugTypeName(plugTypeId) {
     const plugType = plugTypes.find((type) => type.id === plugTypeId);
@@ -78,7 +52,7 @@ export default function Cars() {
 
       <h1 className="cars-title">Mes véhicules</h1>
       <div className="my-cars">
-        {vehicles.map((car) => (
+        {cars.map((car) => (
           <MDBCard border className="one-car" key={car.model}>
             <MDBCardBody>
               <MDBCardTitle>

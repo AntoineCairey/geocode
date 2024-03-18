@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
 import {
   MDBBtn,
@@ -11,29 +10,9 @@ import {
 import { useTheContext } from "../context/Context";
 
 export default function Reservation() {
-  const [reservations, setReservations] = useState([]);
+  const reservations = useLoaderData();
   const { apiService } = useTheContext();
   const navigate = useNavigate();
-
-  const fetchData = async () => {
-    try {
-      const data = await apiService.get(`/reservation/me`);
-      setReservations(
-        data
-          .map((r) => ({
-            ...r,
-            datetime: DateTime.fromSQL(r.datetime),
-          }))
-          .filter((r) => r.is_cancelled === 0)
-      );
-    } catch (error) {
-      console.error("Error fetching reservations:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const now = DateTime.local();
   const future = reservations
@@ -45,7 +24,7 @@ export default function Reservation() {
 
   const handleCancel = async (id) => {
     await apiService.put(`/reservation/cancel/${id}`);
-    fetchData();
+    navigate(0);
   };
 
   return (

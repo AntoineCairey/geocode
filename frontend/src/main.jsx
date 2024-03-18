@@ -63,7 +63,11 @@ const router = createBrowserRouter([
           { path: "/register/infos", element: <RegisterInfos /> },
         ],
       },
-      { path: "/register/cars", element: <RegisterCars /> },
+      {
+        path: "/register/cars",
+        element: <RegisterCars />,
+        loader: async () => await functionsService.getPlugTypes(),
+      },
       {
         path: "/contact",
         element: <Contact />,
@@ -71,20 +75,22 @@ const router = createBrowserRouter([
       {
         path: "/cars",
         element: <Cars />,
-        loader: () => {
+        loader: async () => {
           return {
-            cars: functionsService.getMyCars(),
-            plugTypes: functionsService.fetchPlugTypes(),
+            cars: await functionsService.getMyCars(),
+            plugTypes: await functionsService.getPlugTypes(),
           };
         },
       },
       {
         path: "/newcar",
         element: <NewCar />,
+        loader: async () => await functionsService.getPlugTypes(),
       },
       {
         path: "/reservation",
         element: <Reservation />,
+        loader: async () => functionsService.getMyReservations(),
       },
       {
         path: "/newreservation/:id",
@@ -95,7 +101,7 @@ const router = createBrowserRouter([
       {
         path: "/modifprofil/",
         element: <ModifProfil />,
-        loader: async () => functionsService.getMyInfos(),
+        loader: async () => functionsService.getMyUser(),
       },
       {
         path: "/backoffice",
@@ -110,22 +116,33 @@ const router = createBrowserRouter([
           {
             path: "/backoffice/utilisateur",
             element: <BackOfficeUtilisateur />,
+            loader: async () => functionsService.getUsers(),
           },
           {
             path: "/backoffice/cars",
             element: <BackOfficeCars />,
+            loader: async () => {
+              return {
+                cars: await functionsService.getCars(),
+                plugTypes: await functionsService.getPlugTypes(),
+              };
+            },
           },
           {
             path: "/backoffice/modifprofil/:userId",
             element: <BackOfficeModifProfil />,
             loader: async ({ params }) =>
-              functionsService.getUserInfos(params.userId),
+              functionsService.getUser(params.userId),
           },
           {
             path: "/backoffice/modifcar/:carId",
             element: <BackOfficeModifCar />,
-            loader: async ({ params }) =>
-              functionsService.getCarInfos(params.carId),
+            loader: async ({ params }) => {
+              return {
+                car: await functionsService.getCar(params.carId),
+                plugTypes: await functionsService.getPlugTypes(),
+              };
+            },
           },
         ],
       },

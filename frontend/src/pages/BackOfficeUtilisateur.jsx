@@ -1,32 +1,14 @@
-import { useState, useEffect } from "react";
 import { MDBDatatable, MDBBtn } from "mdb-react-ui-kit";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-// import NavBarBackOffice from "../components/NavBarBackOffice";
 import { useTheContext } from "../context/Context";
 import NavBarBO from "../components/NavBarBO";
 
 export default function BackOfficeUtilisateur() {
-  const [userData, setUserData] = useState(null);
-  // État pour gérer l'affichage de la boîte de dialogue de confirmation
-
+  const userData = useLoaderData();
   const { apiService, setModal, yesNoModal, setYesNoModal } = useTheContext();
   const navigate = useNavigate();
-
-  // Utilisation de useNavigate pour la navigation
-  const fetchData = async () => {
-    try {
-      const response = await apiService.get(`/users`);
-      setUserData(response);
-    } catch (error) {
-      setModal("Erreur lors de la récupération des données :");
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const columns = [
     "ID",
@@ -45,7 +27,7 @@ export default function BackOfficeUtilisateur() {
       await apiService.del(`/users/${userId}`);
       setYesNoModal(false);
       setModal("Le compte a bien été supprimé");
-      fetchData();
+      navigate(0);
     } catch (error) {
       setModal("Error deleting user:");
     }

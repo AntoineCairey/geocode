@@ -1,10 +1,11 @@
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import { MDBInput, MDBBtn, MDBSelect } from "mdb-react-ui-kit";
-import { useState, useEffect } from "react";
 import { useTheContext } from "../context/Context";
 
 export default function RegisterCars() {
-  const [plugTypes, setPlugTypes] = useState([]);
-  const { createNewCar, apiService } = useTheContext();
+  const plugTypes = useLoaderData();
+  const { createNewCar } = useTheContext();
 
   const [vFormData, setvFormData] = useState({
     brand: "",
@@ -21,18 +22,6 @@ export default function RegisterCars() {
       plug_type_id: e.value,
     });
 
-  useEffect(() => {
-    const fetchPlugTypes = async () => {
-      try {
-        const response = await apiService.get(`/plugtypes`);
-        setPlugTypes(response);
-      } catch (error) {
-        console.error("Error fetching plug types:", error);
-      }
-    };
-
-    fetchPlugTypes();
-  }, []);
   const options = plugTypes;
   return (
     <div className="registerInfos-container">
@@ -61,7 +50,7 @@ export default function RegisterCars() {
           className="select-btn"
           value={vFormData.plug_type_id}
           data={options.map((plugType) => ({
-            text: plugType.name, // Assurez-vous que la propriété name correspond à la propriété correcte du type de prise
+            text: plugType.name,
             value: plugType.id,
           }))}
           onValueChange={handleSelect}

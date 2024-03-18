@@ -1,24 +1,22 @@
 import { MDBInput, MDBBtn, MDBSelect } from "mdb-react-ui-kit";
-import { useState, useEffect } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useTheContext } from "../context/Context";
 
 export default function BackOfficeModifCar() {
-  const [plugTypes, setPlugTypes] = useState([]);
   const navigate = useNavigate();
+  const { car, plugTypes } = useLoaderData();
   const { apiService } = useTheContext();
-  const { carId } = useParams();
-  const loaderData = useLoaderData();
 
   const [vFormData, setvFormData] = useState({
-    brand: loaderData?.brand ?? "",
-    model: loaderData?.model ?? "",
-    plug_type_id: loaderData?.plug_type_id ?? "",
+    brand: car?.brand ?? "",
+    model: car?.model ?? "",
+    plug_type_id: car?.plug_type_id ?? "",
   });
 
   const editCar = async (newData) => {
     try {
-      const response = await apiService.put(`/vehicle/${carId}`, newData);
+      const response = await apiService.put(`/vehicle/${car.id}`, newData);
       console.info(response);
     } catch (err) {
       console.error(err);
@@ -30,6 +28,7 @@ export default function BackOfficeModifCar() {
     await editCar(vFormData);
     navigate("/backoffice/cars");
   };
+
   const handleChange = (e) =>
     setvFormData({
       ...vFormData,
@@ -43,18 +42,6 @@ export default function BackOfficeModifCar() {
       plug_type_id: e.value,
     });
 
-  useEffect(() => {
-    const fetchPlugTypes = async () => {
-      try {
-        const response = await apiService.get(`/plugtypes`);
-        setPlugTypes(response);
-      } catch (error) {
-        console.error("Error fetching plug types:", error);
-      }
-    };
-
-    fetchPlugTypes();
-  }, []);
   const options = plugTypes;
 
   return (
@@ -84,7 +71,7 @@ export default function BackOfficeModifCar() {
           className="select-btn"
           value={vFormData.plug_type_id}
           data={options.map((plugType) => ({
-            text: plugType.name, // Assurez-vous que la propriété name correspond à la propriété correcte du type de prise
+            text: plugType.name,
             value: plugType.id,
           }))}
           onValueChange={handleSelect}
