@@ -10,20 +10,17 @@ const fetchStations = async () => {
 
 const returnAdmin = async () => {
   try {
-    const res = await apiService.get(`/users/isadmin`);
-    if (res.message === "ok") {
-      return res.message;
-    }
+    await apiService.get(`/users/isadmin`);
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
-  return null;
 };
 
-const getUserInfos = async (userId) => {
+const getUserInfos = async () => {
   try {
-    const data = await apiService.get(`/users/${userId}`);
-
+    const data = await apiService.get(`/users/me`);
     return { preloadedUserData: data };
   } catch (error) {
     return null;
@@ -39,10 +36,18 @@ const getCarInfos = async (carId) => {
   }
 };
 
+const getCounts = async () => {
+  const userCount = await apiService.get(`/users/count`);
+  const vehicleCount = await apiService.get(`/vehicle/count`);
+  const cpCount = await apiService.get(`/chargingpoint/count`);
+  return { ...userCount, ...vehicleCount, ...cpCount };
+};
+
 export default {
   fetchChargingPoint,
   fetchStations,
   returnAdmin,
   getUserInfos,
   getCarInfos,
+  getCounts,
 };

@@ -87,10 +87,9 @@ const router = createBrowserRouter([
           apiService.get(`/chargingpoint/${params.id}`),
       },
       {
-        path: "/modifprofil/:userId",
+        path: "/modifprofil/",
         element: <ModifProfil />,
-        loader: async ({ params }) =>
-          functionsService.getUserInfos(params.userId),
+        loader: async () => functionsService.getUserInfos(),
       },
       {
         path: "/backoffice",
@@ -100,6 +99,7 @@ const router = createBrowserRouter([
           {
             path: "/backoffice/accueil",
             element: <BackOfficeAccueil />,
+            loader: async () => functionsService.getCounts(),
           },
           {
             path: "/backoffice/utilisateur",

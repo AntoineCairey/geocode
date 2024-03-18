@@ -7,54 +7,37 @@ class UserManager extends AbstractManager {
     super({ table: "user" });
   }
 
-  // The C of CRUD - Create operation
-
   async create(user) {
-    // Execute the SQL INSERT query to add a new user to the "user" table
     const [result] = await this.database.query(
-      `INSERT INTO ${this.table} (email, password) VALUES (?, ?)`,
+      `INSERT INTO user (email, password) VALUES (?, ?)`,
       [user.email, user.password]
     );
-
-    // Return the ID of the newly inserted user
     return result.insertId;
   }
 
-  // The Rs of CRUD - Read operations
-
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific user by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
+      `select * from user where id = ?`,
       [id]
     );
-
-    // Return the first row of the result, which represents the user
     return rows[0];
   }
 
   async readAll() {
-    // Execute the SQL SELECT query to retrieve all users from the "user" table
-    const [rows] = await this.database.query(`select * from ${this.table}`);
-
-    // Return the array of users
+    const [rows] = await this.database.query(`select * from user`);
     return rows;
   }
 
   async countAll() {
-    // Execute the SQL SELECT query to retrieve all users from the "user" table
-    const [rows] = await this.database.query(`SELECT COUNT(*) AS user_count FROM
-    ${this.table}`);
-
-    // Return the array of users
+    const [rows] = await this.database.query(
+      `SELECT COUNT(*) AS user_count FROM user`
+    );
     return rows[0];
   }
-  // The U of CRUD - Update operation
-  // TODO: Implement the update operation to modify an existing user
 
   async update(user, id) {
     const result = await this.database.query(
-      `UPDATE ${this.table} SET first_name = ?, last_name = ?, birth_date = ?, postal_code = ?, city = ? WHERE id = ?`,
+      `UPDATE user SET first_name = ?, last_name = ?, birth_date = ?, postal_code = ?, city = ? WHERE id = ?`,
       [
         user.first_name,
         user.last_name,
@@ -67,21 +50,16 @@ class UserManager extends AbstractManager {
     return result;
   }
 
-  // The D of CRUD - Delete operation
-  // TODO: Implement the delete operation to remove an user by its ID
-
   async delete(id) {
-    const result = await this.database.query(
-      `DELETE FROM ${this.table} WHERE id = ?`,
-      [id]
-    );
+    const result = await this.database.query(`DELETE FROM user WHERE id = ?`, [
+      id,
+    ]);
     return result;
   }
 
-  // Find user by email (for login)
   async findUserByEmail(email) {
     const [rows] = await this.database.query(
-      `select id, password from ${this.table} where email = ?`,
+      `select id, password from user where email = ?`,
       [email]
     );
     return rows[0];
@@ -89,7 +67,7 @@ class UserManager extends AbstractManager {
 
   async getEmail(email) {
     const [rows] = await this.database.query(
-      `select * from ${this.table} where email = ?`,
+      `select * from user where email = ?`,
       [email]
     );
     return rows[0];
@@ -97,7 +75,7 @@ class UserManager extends AbstractManager {
 
   async isAdmin(id) {
     const [rows] = await this.database.query(
-      `select is_admin from ${this.table} where id = ?`,
+      `select is_admin from user where id = ?`,
       [id]
     );
     return rows[0];

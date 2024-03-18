@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
 import {
   MDBContainer,
   MDBRow,
@@ -6,50 +6,10 @@ import {
   MDBCol,
   MDBCardBody,
 } from "mdb-react-ui-kit";
-import { useTheContext } from "../context/Context";
 import NavBarBO from "../components/NavBarBO";
 
 export default function BAckOfficeAccueil() {
-  const [usersNbr, setUsersNbr] = useState();
-  const [vehicleNbr, setVehicleNbr] = useState();
-  const [chargingpointNbr, setchargingpointNbr] = useState();
-  const { apiService } = useTheContext();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiService.get(`/users/count`);
-        setUsersNbr(response);
-      } catch (error) {
-        console.error("Error fetching usersCount:", error);
-      }
-    };
-    fetchData();
-  }, []); // Ajout d'une dépendance vide pour exécuter useEffect une seule fois
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiService.get(`/vehicle/count`);
-        setVehicleNbr(response);
-      } catch (error) {
-        console.error("Error fetching vehicleCount:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiService.get(`/chargingpoint/count`);
-        setchargingpointNbr(response);
-      } catch (error) {
-        console.error("Error fetching chargingpointCount:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const counts = useLoaderData();
 
   return (
     <div className="backofficeaccueil_container">
@@ -70,9 +30,7 @@ export default function BAckOfficeAccueil() {
                         <p className="text-muted mb-1">
                           Utilisateurs Enregistrés
                         </p>
-                        <h2 className="mb-0">
-                          {usersNbr && usersNbr.user_count}
-                        </h2>
+                        <h2 className="mb-0">{counts.user_count}</h2>
                       </MDBCardBody>
                     </MDBCard>
                   </MDBCol>
@@ -81,9 +39,7 @@ export default function BAckOfficeAccueil() {
                     <MDBCard>
                       <MDBCardBody>
                         <p className="text-muted mb-1">Véhicules Enregistrés</p>
-                        <h2 className="mb-0">
-                          {vehicleNbr && vehicleNbr.vehicle_count}
-                        </h2>
+                        <h2 className="mb-0">{counts.vehicle_count}</h2>
                       </MDBCardBody>
                     </MDBCard>
                   </MDBCol>
@@ -92,10 +48,7 @@ export default function BAckOfficeAccueil() {
                     <MDBCard>
                       <MDBCardBody>
                         <p className="text-muted mb-1">Bornes Répertoriées</p>
-                        <h2 className="mb-0">
-                          {chargingpointNbr &&
-                            chargingpointNbr.charging_point_count}
-                        </h2>
+                        <h2 className="mb-0">{counts.charging_point_count}</h2>
                       </MDBCardBody>
                     </MDBCard>
                   </MDBCol>

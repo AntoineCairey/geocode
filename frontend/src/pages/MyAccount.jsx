@@ -53,7 +53,7 @@ export default function MyAccount() {
         </Link>
 
         <div className="modification-profil" />
-        <Link to={`/modifprofil/${user?.id}`}>
+        <Link to="/modifprofil">
           <MDBBtn className="buttonprofil" color="light" rippleColor="dark">
             <p>Modifier mon profil</p>
             <p>&rarr;</p>

@@ -7,74 +7,54 @@ function generateAccessToken(username) {
   return jwt.sign(username, process.env.APP_SECRET, { expiresIn: "1600s" });
 }
 
-// The B of BREAD - Browse (Read All) operation
 const browse = async (req, res, next) => {
   try {
-    // Fetch all users from the database
     const users = await tables.user.readAll();
-
-    // Respond with the users in JSON format
     res.json(users);
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 
 const usersCount = async (req, res, next) => {
   try {
-    // Fetch all users from the database
     const users = await tables.user.countAll();
-
-    // Respond with the users in JSON format
     res.json(users);
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 
-// The R of BREAD - Read operation
 const read = async (req, res, next) => {
   try {
-    // Fetch a specific user from the database based on the provided ID
-    const user = await tables.user.read(req.params.id);
-
-    // If the user is not found, respond with HTTP 404 (Not Found)
-    // Otherwise, respond with the user in JSON format
+    const user = await tables.user.read(req.params?.id ?? req.user.id);
     if (user == null) {
       res.sendStatus(404);
     } else {
       res.json(user);
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 
-// The E of BREAD - Edit (Update) operation
-// This operation is not yet implemented
 const edit = async (req, res, next) => {
   try {
-    // Insert the user into the database
-    const modifiedUser = await tables.user.update(req.body, req.params.id);
-
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted user
+    const modifiedUser = await tables.user.update(
+      req.body,
+      req.params?.id ?? req.user.id
+    );
     if (modifiedUser !== null) {
       res.status(201).json({ req: "worked" });
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 
-// The A of BREAD - Add (Create) operation
 const add = async (req, res, next) => {
   const user = req.body;
   const notHashedPassword = user.password;
-
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
@@ -101,25 +81,20 @@ const add = async (req, res, next) => {
   }
 };
 
-// The D of BREAD - Destroy (Delete) operation
-// This operation is not yet implemented
 const destroy = async (req, res, next) => {
   try {
-    const result = await tables.user.delete(req.params.id);
-    // const userDeleted = await tables.user.read(req.params.id);
+    const result = await tables.user.delete(req.params?.id ?? req.user.id);
     if (result.affectedRows === 0) {
       res.sendStatus(404);
     } else {
       res.sendStatus(200);
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     console.error(err);
     next(err);
   }
 };
 
-// Login operation
 const login = async (req, res, next) => {
   const user = await tables.user.findUserByEmail(req.body.email);
   if (user == null) {
@@ -146,7 +121,6 @@ const checkEmail = async (req, res) => {
   }
 };
 
-// Ready to export the controller functions
 module.exports = {
   browse,
   read,

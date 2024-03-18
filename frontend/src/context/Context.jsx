@@ -19,19 +19,14 @@ export function ContextProvider({ apiService, children }) {
     localStorage.removeItem("token");
     navigate("/");
   };
-  // eslint-disable-next-line consistent-return
 
-  /* fonction qui vérifie le token :
-    - déconnecte si pas de token ou non valide ou expiré
-    - remplit state user avec les infos du token */
   const getUserInfos = async () => {
     const jwtToken = localStorage.getItem("token");
     if (!jwtToken) {
       logout();
     }
-    const token = jwtDecode(jwtToken);
     try {
-      const data = await apiService.get(`/users/${token.id}`);
+      const data = await apiService.get(`/users/me`);
       setUser(data);
     } catch (err) {
       if (err.response.status === 403) {
@@ -42,10 +37,8 @@ export function ContextProvider({ apiService, children }) {
 
   // modification du profil : modifie le state "user" et le localStorage
   const editUser = async (newData, link) => {
-    const jwtToken = apiService.getToken();
-    const token = jwtDecode(jwtToken);
     try {
-      await apiService.put(`/users/${token.id}`, newData);
+      await apiService.put(`/users/me`, newData);
       getUserInfos();
       navigate(link);
     } catch (err) {
@@ -79,12 +72,9 @@ export function ContextProvider({ apiService, children }) {
 
   // suppression du compte : vide le state "user" et modifie le localStorage
   const deleteUser = async () => {
-    const jwtToken = apiService.getToken();
-    const token = jwtDecode(jwtToken);
     try {
-      await apiService.del(`/users/${token.id}`);
+      await apiService.del(`/users/me`);
       logout();
-
       setModal("Votre compte a bien été supprimé");
     } catch (err) {
       console.error(err);
