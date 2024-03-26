@@ -26,7 +26,7 @@ export default function RegisterCars() {
   return (
     <div className="registerInfos-container">
       <div className="login-form">
-        <h1>Mes infos</h1>
+        <h1>Mon véhicule</h1>
         <MDBInput
           className="mb-4"
           type="string"
