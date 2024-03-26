@@ -52,7 +52,7 @@ export default function NewReservation() {
   };
   const timeOptions = generateTimeOptions();
 
-  // Soumettre le rendez-vous
+  // Enregistrer la réservation
   const handleSubmit = async () => {
     const selectedDateTime = DateTime.fromISO(
       `${selectedDate}T${selectedTime}`
@@ -63,7 +63,6 @@ export default function NewReservation() {
       user_id: user.id,
       charging_point_id: chargingPoint.id,
     };
-    // Ajoutez ici la logique pour traiter le rendez-vous
     await apiService.post(`/reservation`, newReservation);
     navigate("/reservation");
   };
