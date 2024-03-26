@@ -47,11 +47,6 @@ export default function Login() {
       <div className="register-container">
         <p> {innerError ?? { innerError }}</p>
       </div>
-      <MDBRow className="mb-4">
-        <MDBCol>
-          <a href="#!">Mot de passe oublié? </a>
-        </MDBCol>
-      </MDBRow>
 
       <MDBBtn
         type="submit"
